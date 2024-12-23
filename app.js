@@ -30,4 +30,4 @@ app.use('/',require('./routes/blog'));
 mongoose.connect(mongoURI).then(e=>console.log("Mongodb is connected"))
 
 
-app.listen(port,()=>console.log(`App is running on ${port}`))
+app.listen(port,()=>console.log(`Server is running on ${port}`))

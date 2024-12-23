@@ -104,3 +104,82 @@ sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
 # Only valid for 90 days, test the renewal process with
 certbot renew --dry-run
 
+
+
+
+
+# setup via SSH client
+1. copy instance path and open cmd where is your pem file is located Ex-:- C:\Users\DELL\Downloads>
+2. then you will inside ubuntu with ip address and you can match same with private IP Address.
+
+
+# Setup Github actions (self hosted runner configuration/ setup action runner on EC2 instance)
+1. Go to repo's settings-> Actions-> Runners
+2. Add new self hosted runner and choose Linux as we are using ubuntu on aws
+3. Do all commands on ssh client cmd in windows one by one
+ubuntu@ip-172-31-12-52:~$                           mkdir actions-runner-backend && cd actions-runner-backend
+ubuntu@ip-172-31-12-52:~/actions-runner-backend$    curl -o actions-runner-linux-x64-2.321.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.321.0/actions-runner-linux-x64-2.321.0.tar.gz    
+ 
+
+Copied!# Optional: Validate the hash
+$ echo "ba46ba7ce3a4d7236b16fbe44419fb453bc08f866b24f04d549ec89f1722a29e  actions-runner-linux-x64-2.321.0.tar.gz" | shasum -a 256 -c
+Copied!# Extract the installer
+$ tar xzf ./actions-runner-linux-x64-2.321.0.tar.gz
+
+
+4. Do all Run configure commands
+ubuntu@ip-172-31-12-52:~/actions-runner-backend$ ./config.sh --url https://github.com/Harshit8936/blog --token ALYFSOAQVN7YQLV63VXKY7THNEJJQ
+
+
+5. ls
+6. sudo ./svc.sh install
+7. sudo ./svc.sh start
+
+# create secret and variables
+1. goto secret and variables -> Actions ->Add new repository secret
+2. Paste all env vriables inside.
+
+# create CI/CD workflows
+1. go to Actions tab
+2. choose node js under continous integration and then click on configure
+3. do modifications inside same
+
+# then install node js and nginx server follow commnads
+1. sudo apt-get update
+2. Install Node and NPM
+curl -sL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get update 
+sudo apt-get install nodejs -y
+
+node --version
+npm --version
+
+3. Install NGINX and configure
+sudo apt install nginx
+
+sudo nginx
+
+
+sudo vim /etc/nginx/sites-available/default
+
+location / {
+        proxy_pass http://localhost:5000; #whatever port your app runs on
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+sudo nginx -s reload
+
+4. Install pm2
+sudo npm i -g pm2 
+
+5. pm2 start app.js
+
+
+
+
+
+
+
