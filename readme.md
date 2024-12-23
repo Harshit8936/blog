@@ -20,16 +20,32 @@ Create EC2 iam role
 1. Create EC2 instance and add configuration as per the requirement.
 2. Create and Lauch an EC2 instance and SSH into machine
 I would be creating a t2.medium ubuntu machine for this demo.
+Update :- sudo apt-get update 
 3. Install Node and NPM
 curl -sL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get update 
 sudo apt install nodejs
 
 node --version
 4. Clone your project from Github
 git clone https://github.com/Harshit8936/Node-Blogify.git
+ls---> to check whether folder is there or not
+run npm install
 5. Install dependencies and test app
-sudo npm i pm2 -g
-pm2 start index
+cd.. go outside the folder and run following command
+sudo npm i -g pm2 
+Go to your projct folder and run following command
+pm2 start app.js
+
+export MONGO_URI="mongodb+srv://harshitbhargav123:harshitbhargav123@cluster0.pyfh2.mongodb.net/blogify_db?retryWrites=true&w=majority&appName=Cluster0]"
+export PORT = 5000
+
+pm2 update
+pm2 kill
+pm2 start app.js
+
+pm2 restart all
+vim index.js--> to open any file in terminal
 
 # Other pm2 commands
 pm2 show app
@@ -52,7 +68,11 @@ sudo ufw allow https (Port 443)
 7. Install NGINX and configure
 sudo apt install nginx
 
-sudo nano /etc/nginx/sites-available/default
+sudo nginx
+
+sudo nginx -s reload
+
+sudo vim /etc/nginx/sites-available/default
 
 # Add the following to the location part of the server block
 
@@ -60,7 +80,7 @@ sudo nano /etc/nginx/sites-available/default
 server_name yourdomain.com www.yourdomain.com;
 
     location / {
-        proxy_pass http://localhost:8001; #whatever port your app runs on
+        proxy_pass http://localhost:7000; #whatever port your app runs on
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -72,6 +92,7 @@ sudo nginx -t
 
 # Restart NGINX
 sudo nginx -s reload
+if any port change or domain name change run above command
 
 
 8. Add SSL with LetsEncrypt
